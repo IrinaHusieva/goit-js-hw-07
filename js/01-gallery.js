@@ -1,7 +1,7 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-const refs = document.querySelector('.gallery');
+const gallery = document.querySelector('.gallery');
 const galleryElements = [];
 
 galleryItems.forEach(galleryItem => {
@@ -10,13 +10,16 @@ galleryItems.forEach(galleryItem => {
     const link = document.createElement('a');
     const image = document.createElement('img');
 
+    
     item.classList.add('gallery__item');
     link.classList.add('gallery__link');
     image.classList.add('gallery__image');
-
+    
     link.href = galleryItem.original;
     image.src = galleryItem.preview;
     image.alt = galleryItem.description;
+    
+    image.dataset.source = galleryItem.original;
 
     item.append(link);
     link.append(image);
@@ -24,17 +27,19 @@ galleryItems.forEach(galleryItem => {
     galleryElements.push(item);
 
 });
-refs.append(...galleryElements);
+gallery.append(...galleryElements);
 
 console.log(galleryElements);
 
 // ---------------------------------------------------
 
-refs.addEventListener('click', selectImg);
+gallery.addEventListener('click', selectImg);
 
 function selectImg(event) {
-    const index = event.target.dataset.index;
-
-    console.log(index);
-
-}
+    event.preventDefault();
+    if (event.target.classList.contains('galery__image')) {
+        const instance = basicLightbox.create(`
+        <img src="${event.target.dataset.source}">`);
+        instance.show()
+    }
+};
