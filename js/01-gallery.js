@@ -36,10 +36,19 @@ console.log(galleryElements);
 gallery.addEventListener('click', selectImg);
 
 function selectImg(event) {
+    
     event.preventDefault();
-    if (event.target.classList.contains('galery__image')) {
+
+    if (event.target.classList.contains('gallery__image')) {
         const instance = basicLightbox.create(`
         <img src="${event.target.dataset.source}">`);
-        instance.show()
+        instance.show();
+        
+        window.addEventListener('keydown', (event) => {
+            if (event.code === 'Escape') {
+                instance.close();
+            }
+        });
+    
     }
 };
